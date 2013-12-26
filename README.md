@@ -2,5 +2,6 @@ convT
 =====
 
 Converter temperature values​​.
-(my first haskell program)
+
+*My first haskell program.*
 
