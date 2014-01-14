@@ -23,7 +23,7 @@ import Control.Exception
 import Text.Printf
 
 version :: String
-version = "v0.2.0"
+version = "v0.3.0"
 
 about :: String
 about = printf "\n%s %s\n%s\n" "convT" version "Converter temperature values."
@@ -31,21 +31,23 @@ about = printf "\n%s %s\n%s\n" "convT" version "Converter temperature values."
 main = do
     putStrLn about
     putStrLn "Enter temperature value: "
-    valStr <- getLine
+    srcVal <- getLine
     putStrLn "Enter temperature dimension: "
-    dimStr <- getLine
-    putStrLn (doConv valStr dimStr) `catch` handleErr
+    srcDim <- getLine
+    putStrLn ""
+    putStrLn (doConv srcVal srcDim) `catch` handleErr
+    putStrLn ""
 
 handleErr :: SomeException -> IO ()
 handleErr e = putStrLn "An error has occurred. Be careful when entering data!"
 
 doConv :: String -> String -> String
-doConv valStr dimStr = conv (read valStr) (head dimStr)
+doConv srcVal srcDim = conv (read srcVal) (head srcDim)
 
 conv :: Double -> Char -> String
-conv valStr 'C' = "Temperature = " ++ (printf "%.3f" (cToF valStr)) ++ " F"
-conv valStr 'F' = "Temperature = " ++ (printf "%.3f" (fToC valStr)) ++ " C"
-conv valStr dimStr = "Unknown dimension! Be careful when entering data!"
+conv srcVal 'C' = (printf "%.3f" srcVal) ++ " C = " ++ (printf "%.3f" (cToF srcVal)) ++ " F"
+conv srcVal 'F' = (printf "%.3f" srcVal) ++ " F = " ++ (printf "%.3f" (fToC srcVal)) ++ " C"
+conv srcVal srcDim = "Unknown dimension! Be careful when entering data!"
 
 cToF :: Double -> Double
 cToF tC = tC * 9 / 5 + 32
